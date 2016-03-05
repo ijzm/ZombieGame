@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<title>
+	ZombieGame
+</title>
+
+<style>
+	canvas {
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+</style>
+
+
+<script type="text/javascript" src="phaser.js"></script>
+<script type="text/javascript" src="Boot.js"></script>
+<script type="text/javascript" src="Preloader.js"></script>
+<script type="text/javascript" src="MainMenu.js"></script>
+<script type="text/javascript" src="Game.js"></script>
+<script type="text/javascript" src="GameOver.js"></script>
+
+
+
+
+
+<script type="text/javascript">
+	window.onload = function () {
+		//set up Phaser canvas with width = 800 and height = 600 
+		var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
+
+		//adding all the required states
+		game.state.add('Boot', ZombieGame.Boot);
+		game.state.add('Preloader', ZombieGame.Preloader);
+		game.state.add('MainMenu', ZombieGame.MainMenu);
+		game.state.add('Game', ZombieGame.Game);
+		game.state.add('GameOver', ZombieGame.GameOver);
+
+		game.state.start('Boot'); //starting the boot state
+
+	};
+</script>
+
+</html>
