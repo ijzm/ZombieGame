@@ -12,7 +12,8 @@ var map;
 
 var pspeed = 256;
 
-
+var bulletstext;
+var bulletsremaining = 10;
 
 
 
@@ -28,7 +29,7 @@ ZombieGame.Game.prototype = {
 		layer.resizeWorld();
 
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		player = this.add.sprite(0, 0, "char");
+		player = this.add.sprite(10, 10, "char");
 		player.anchor.x = 0.5;
 		player.anchor.y = 0.5;
 		this.physics.arcade.enable(player);
@@ -59,8 +60,15 @@ ZombieGame.Game.prototype = {
 		map.setCollisionBetween(31, 35);
 		map.setCollisionBetween(51, 53);
 
-
-
+		bulletstext = this.add.text(0, 0, "Bullets: " + bulletsremaining, {
+			font: "60px Arial",
+			fill: "#FFFFFF",
+			stroke: '#000000',
+			strokeThickness: 3,
+		});
+		bulletstext.anchor.x = 0;
+		bulletstext.anchor.y = 0;
+		bulletstext.fixedToCamera = true;
 
 	},
 
@@ -121,10 +129,12 @@ ZombieGame.Game.prototype = {
 			this.collide(singleEnemy, bullets, function (x, y) {
 				this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
 					x.destroy();
-					y.y = -100;
 				}, this);
+				y.y = -100;
 			}, null, this);
 		}, this.game.physics.arcade);
+
+		this.updatetext();
 
 	},
 
@@ -141,20 +151,26 @@ ZombieGame.Game.prototype = {
 	},
 
 	fire: function () {
-		if (this.time.now > nextFire && bullets.countDead() > 0) {
-			nextFire = this.time.now + fireRate;
-			var bullet = bullets.getFirstExists(false);
-			bullet.reset(player.x, player.y);
-			bullet.anchor.x = 0.5;
-			bullet.anchor.x = 0.5;
-			//bullet.rotation = this.physics.arcade.moveToPointer(bullet, 1000, this.input.activePointer);
-			bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(30), this.input.activePointer.worldY + this.weaponpresition(30), 1000)
+		if (bulletsremaining) {
+			if (this.time.now > nextFire && bullets.countDead() > 0) {
+				nextFire = this.time.now + fireRate;
+				var bullet = bullets.getFirstExists(false);
+				bullet.reset(player.x, player.y);
+				bullet.anchor.x = 0.5;
+				bullet.anchor.x = 0.5;
+				bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(30), this.input.activePointer.worldY + this.weaponpresition(30), 2000)
+				bulletsremaining--;
+			}
 		}
 
 	},
 
 	weaponpresition: function (foo) {
 		return (Math.floor((Math.random() * 2 * foo) - foo));
+	},
+
+	updatetext: function () {
+		bulletstext.setText("Bullets: " + bulletsremaining);
 	}
 
 };
