@@ -9,6 +9,8 @@ var lastscore = 0;
 var canclick = false;
 var level;
 
+var debug = 0;
+
 ZombieGame.Boot = function (game) { //declare the boot state
 
 };

@@ -4,11 +4,13 @@ var player;
 var zombies;
 
 var bullets;
-var fireRate = 100;
+var fireRate = 700;
 var nextFire = 0;
 
 var layer;
 var map;
+
+var pspeed = 256;
 
 
 
@@ -53,10 +55,20 @@ ZombieGame.Game.prototype = {
 		zombies.setAll('anchor.x', 0.5);
 		zombies.setAll('anchor.y', 0.5);
 
+		map.setCollisionBetween(11, 15);
+		map.setCollisionBetween(31, 35);
+		map.setCollisionBetween(51, 53);
+
+
+
+
 	},
 
 	update: function () {
 		player.bringToTop();
+		this.physics.arcade.collide(player, layer);
+		this.physics.arcade.collide(zombies, layer);
+
 		var cursors = this.input.keyboard.createCursorKeys();
 		var wasd = {
 			up: this.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -65,17 +77,17 @@ ZombieGame.Game.prototype = {
 			right: this.input.keyboard.addKey(Phaser.Keyboard.D),
 		};
 		if (wasd.up.isDown || cursors.up.isDown) {
-			player.body.velocity.y = -150;
+			player.body.velocity.y = -pspeed;
 		} else if (wasd.down.isDown || cursors.down.isDown) {
-			player.body.velocity.y = 150;
+			player.body.velocity.y = pspeed;
 
 		} else {
 			player.body.velocity.y = 0;
 		}
 		if (wasd.left.isDown || cursors.left.isDown) {
-			player.body.velocity.x = -150;
+			player.body.velocity.x = -pspeed;
 		} else if (wasd.right.isDown || cursors.right.isDown) {
-			player.body.velocity.x = 150;
+			player.body.velocity.x = pspeed;
 		} else {
 			player.body.velocity.x = 0;
 		}
@@ -100,28 +112,32 @@ ZombieGame.Game.prototype = {
 			this.collide(singleEnemy, zombies);
 		}, this.game.physics.arcade);
 
-		zombies.forEachAlive(function (singleEnemy) {
-			this.collide(singleEnemy, bullets, function (x, y) {
-				x.destroy();
-			}, null, this);
-		}, this.game.physics.arcade);
 
 		zombies.forEachAlive(function (singleEnemy) {
 			singleEnemy.rotation = this.angleToXY(singleEnemy, player.x, player.y);
 		}, this.game.physics.arcade);
 
+		zombies.forEachAlive(function (singleEnemy) {
+			this.collide(singleEnemy, bullets, function (x, y) {
+				this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
+					x.destroy();
+					y.y = -100;
+				}, this);
+			}, null, this);
+		}, this.game.physics.arcade);
 
 	},
 
 	render: function () {
-		this.game.debug.body(player);
-		zombies.forEach(function (singleEnemy) {
-			this.body(singleEnemy);
-		}, this.game.debug);
-		bullets.forEach(function (singleEnemy) {
-			this.body(singleEnemy);
-		}, this.game.debug);
-
+		if (debug) {
+			this.game.debug.body(player);
+			zombies.forEach(function (singleEnemy) {
+				this.body(singleEnemy);
+			}, this.game.debug);
+			bullets.forEach(function (singleEnemy) {
+				this.body(singleEnemy);
+			}, this.game.debug);
+		}
 	},
 
 	fire: function () {
@@ -131,9 +147,14 @@ ZombieGame.Game.prototype = {
 			bullet.reset(player.x, player.y);
 			bullet.anchor.x = 0.5;
 			bullet.anchor.x = 0.5;
-			bullet.rotation = this.physics.arcade.moveToPointer(bullet, 1000, this.input.activePointer);
+			//bullet.rotation = this.physics.arcade.moveToPointer(bullet, 1000, this.input.activePointer);
+			bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(30), this.input.activePointer.worldY + this.weaponpresition(30), 1000)
 		}
 
 	},
+
+	weaponpresition: function (foo) {
+		return (Math.floor((Math.random() * 2 * foo) - foo));
+	}
 
 };
