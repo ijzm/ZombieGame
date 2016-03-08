@@ -34,7 +34,6 @@ ZombieGame.GameOver.prototype = {
 		console.log("PLAY");
 		this.state.start("Game");
 		music.stop();
-		console.log("level:" + level);
 	},
 
 	mainmenu: function () {

@@ -33,6 +33,7 @@ ZombieGame.Game.prototype = {
 	preload: function () {},
 
 	create: function () {
+		zombieindex = 0;
 
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
@@ -74,7 +75,6 @@ ZombieGame.Game.prototype = {
 			zombies.setAll('anchor.x', 0.5);
 			zombies.setAll('anchor.y', 0.5);
 
-			console.log(zombies.children[zombieindex].health)
 			zombieindex++
 		}, this);
 		this.timer1.start();
@@ -245,8 +245,6 @@ ZombieGame.Game.prototype = {
 			if (selectedweapon == 2) {} else {
 				y.y = -1337;
 			}
-
-			score += 100;
 		}, null, this);
 
 		if (singleEnemy.health <= 0) {
@@ -254,6 +252,7 @@ ZombieGame.Game.prototype = {
 				singleEnemy.alive = false;
 				singleEnemy.destroy();
 				zombieindex--;
+				score += 100;
 			}, this);
 		}
 
