@@ -238,11 +238,14 @@ ZombieGame.Game.prototype = {
 
 		singleEnemy.rotation = this.angleToXY(singleEnemy, player.x, player.y);
 
-		this.collide(singleEnemy, bullets, function (x, y) {
+		this.overlap(singleEnemy, bullets, function (x, y) {
 			this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
 				x.health -= bulletdamage;
 			}, this);
-			y.y = -1337;
+			if (selectedweapon == 2) {} else {
+				y.y = -1337;
+			}
+
 			score += 100;
 		}, null, this);
 
