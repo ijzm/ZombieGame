@@ -2,6 +2,7 @@ ZombieGame.Game = function (game) {};
 
 var player;
 var zombies;
+var crates;
 
 var bullets;
 var fireRate = 700;
@@ -15,6 +16,8 @@ var pspeed = 256;
 var bulletstext;
 var bulletsremaining = 10;
 
+var scoretext;
+
 
 
 ZombieGame.Game.prototype = {
@@ -25,8 +28,14 @@ ZombieGame.Game.prototype = {
 
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
+
 		layer = map.createLayer('00');
 		layer.resizeWorld();
+
+		crates = this.add.group();
+		crates.enableBody = true;
+		map.createFromTiles(189, 22, "crate", layer, crates);
+
 
 		this.physics.startSystem(Phaser.Physics.ARCADE);
 		player = this.add.sprite(10, 10, "char");
@@ -59,6 +68,7 @@ ZombieGame.Game.prototype = {
 		map.setCollisionBetween(11, 15);
 		map.setCollisionBetween(31, 35);
 		map.setCollisionBetween(51, 53);
+		map.setTileIndexCallback(189, this.collectbullets, this);
 
 		bulletstext = this.add.text(0, 0, "Bullets: " + bulletsremaining, {
 			font: "60px Arial",
@@ -70,6 +80,15 @@ ZombieGame.Game.prototype = {
 		bulletstext.anchor.y = 0;
 		bulletstext.fixedToCamera = true;
 
+		scoretext = this.add.text(800, 0, "Score: " + score, {
+			font: "60px Arial",
+			fill: "#FFFFFF",
+			stroke: '#000000',
+			strokeThickness: 3,
+		});
+		scoretext.anchor.x = 1;
+		scoretext.anchor.y = 0;
+		scoretext.fixedToCamera = true;
 	},
 
 	update: function () {
@@ -131,8 +150,11 @@ ZombieGame.Game.prototype = {
 					x.destroy();
 				}, this);
 				y.y = -100;
+				score += 100;
 			}, null, this);
 		}, this.game.physics.arcade);
+
+		this.game.physics.arcade.collide(player, crates, this.collectbullets)
 
 		this.updatetext();
 
@@ -171,6 +193,12 @@ ZombieGame.Game.prototype = {
 
 	updatetext: function () {
 		bulletstext.setText("Bullets: " + bulletsremaining);
-	}
+		scoretext.setText("Score: " + score);
+	},
+	collectbullets: function (x, y) {
+		y.destroy();
+		score += 50;
+		bulletsremaining += 5;
+	},
 
 };
