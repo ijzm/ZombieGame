@@ -38,6 +38,7 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('logo', 'assets/logo.png');
 
 		this.load.spritesheet('char', 'assets/player.png', 56, 43);
+		this.load.spritesheet('gunhud', 'assets/gunhud.png', 64, 64);
 		this.load.image('bg', 'assets/bg.png');
 		this.load.image('credits', 'assets/credits.png');
 		this.load.image('help', 'assets/help.png');
