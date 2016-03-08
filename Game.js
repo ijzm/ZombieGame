@@ -8,6 +8,7 @@ var bullets;
 var fireRate = 500;
 var nextFire = 0;
 var bulletdamage = 3;
+var accuarcity = 30;
 
 var layer;
 var map;
@@ -21,6 +22,9 @@ var scoretext;
 
 var selectedweapon = 0;
 var gunhud;
+
+var zombiemaxhealth = 10;
+var zombieindex = 0;
 
 
 
@@ -62,15 +66,16 @@ ZombieGame.Game.prototype = {
 		zombies = this.add.group();
 		zombies.enableBody = true;
 
-
-		//		for (var i = 0; i < 50; i++) {
-		//			var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
-		//		}
 		this.timer1 = this.game.time.create(false);
 		this.timer1.loop(1000, function () {
 			var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
+			var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
+			zombies.set(zombies.children[zombieindex], "health", newhealth);
 			zombies.setAll('anchor.x', 0.5);
 			zombies.setAll('anchor.y', 0.5);
+
+			console.log(zombies.children[zombieindex].health)
+			zombieindex++
 		}, this);
 		this.timer1.start();
 
@@ -104,10 +109,10 @@ ZombieGame.Game.prototype = {
 		gunhud.fixedToCamera = true;
 
 
-		this.game.input.keyboard.onDownCallback = function (e) {
-			console.log(e.keyCode);
-
-		}
+		//		this.game.input.keyboard.onDownCallback = function (e) {
+		//			console.log(e.keyCode);
+		//
+		//		}
 
 	},
 
@@ -161,16 +166,19 @@ ZombieGame.Game.prototype = {
 			selectedweapon = 0
 			fireRate = 500;
 			bulletdamage = 3;
+			accuarcity = 15;
 		} else
 		if (wasd.two.isDown) {
 			selectedweapon = 1
-			fireRate = 100;
-			bulletdamage = 1;
+			fireRate = 50;
+			bulletdamage = 15 / 10;
+			accuarcity = 35;
 		} else
 		if (wasd.three.isDown) {
 			selectedweapon = 2
 			fireRate = 1000;
 			bulletdamage = 10;
+			accuarcity = 0;
 		}
 
 
@@ -196,7 +204,7 @@ ZombieGame.Game.prototype = {
 				bullet.reset(player.x, player.y);
 				bullet.anchor.x = 0.5;
 				bullet.anchor.x = 0.5;
-				bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(30), this.input.activePointer.worldY + this.weaponpresition(30), 2000)
+				bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(accuarcity), this.input.activePointer.worldY + this.weaponpresition(accuarcity), 2000)
 				bulletsremaining--;
 			}
 		}
@@ -218,6 +226,8 @@ ZombieGame.Game.prototype = {
 	},
 	zombieupdate: function (singleEnemy) {
 
+		//console.log(singleEnemy.health)
+
 		this.moveToObject(singleEnemy, player);
 
 		this.collide(singleEnemy, player, function () {
@@ -230,13 +240,19 @@ ZombieGame.Game.prototype = {
 
 		this.collide(singleEnemy, bullets, function (x, y) {
 			this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
-				x.destroy();
+				x.health -= bulletdamage;
 			}, this);
 			y.y = -1337;
 			score += 100;
 		}, null, this);
 
-
+		if (singleEnemy.health <= 0) {
+			this.game.time.events.add(Phaser.Timer.SECOND * 0.01, function () {
+				singleEnemy.alive = false;
+				singleEnemy.destroy();
+				zombieindex--;
+			}, this);
+		}
 
 	},
 
