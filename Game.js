@@ -150,34 +150,7 @@ ZombieGame.Game.prototype = {
 			this.fire();
 		}
 
-		zombies.forEachAlive(function (singleEnemy) {
-			this.moveToObject(singleEnemy, player);
-		}, this.game.physics.arcade);
-
-		zombies.forEachAlive(function (singleEnemy) {
-			this.collide(singleEnemy, player, function () {
-				this.game.state.start("GameOver");
-			}, null, this);
-		}, this.game.physics.arcade);
-
-		zombies.forEachAlive(function (singleEnemy) {
-			this.collide(singleEnemy, zombies);
-		}, this.game.physics.arcade);
-
-
-		zombies.forEachAlive(function (singleEnemy) {
-			singleEnemy.rotation = this.angleToXY(singleEnemy, player.x, player.y);
-		}, this.game.physics.arcade);
-
-		zombies.forEachAlive(function (singleEnemy) {
-			this.collide(singleEnemy, bullets, function (x, y) {
-				this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
-					x.destroy();
-				}, this);
-				y.y = -1337;
-				score += 100;
-			}, null, this);
-		}, this.game.physics.arcade);
+		zombies.forEachAlive(this.zombieupdate, this.game.physics.arcade)
 
 		this.game.physics.arcade.collide(player, crates, this.collectbullets)
 
@@ -199,6 +172,8 @@ ZombieGame.Game.prototype = {
 			fireRate = 1000;
 			bulletdamage = 10;
 		}
+
+
 	},
 
 	render: function () {
@@ -240,6 +215,29 @@ ZombieGame.Game.prototype = {
 		y.destroy();
 		score += 50;
 		bulletsremaining += 5;
+	},
+	zombieupdate: function (singleEnemy) {
+
+		this.moveToObject(singleEnemy, player);
+
+		this.collide(singleEnemy, player, function () {
+			this.game.state.start("GameOver");
+		}, null, this);
+
+		this.collide(singleEnemy, zombies);
+
+		singleEnemy.rotation = this.angleToXY(singleEnemy, player.x, player.y);
+
+		this.collide(singleEnemy, bullets, function (x, y) {
+			this.game.time.events.add(Phaser.Timer.SECOND * 0.001, function () {
+				x.destroy();
+			}, this);
+			y.y = -1337;
+			score += 100;
+		}, null, this);
+
+
+
 	},
 
 };
