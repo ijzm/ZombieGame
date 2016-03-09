@@ -92,7 +92,7 @@ ZombieGame.Game.prototype = {
 
 
 		this.timer1 = this.game.time.create(false);
-		this.timer1.loop(200, function () {
+		this.timer1.loop(1000, function () {
 			if (zombies.length >= 100) {} else {
 				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
