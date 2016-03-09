@@ -16,7 +16,7 @@ var map;
 var pspeed = 256;
 
 var bulletstext;
-var bulletsremaining = [100, 1000, 10];
+var bulletsremaining = [10, 100, 1];
 
 var scoretext;
 
@@ -29,6 +29,11 @@ var zombieindex = 0;
 var minimap;
 var pointer;
 
+var boxes;
+var boxindex = 0;
+var boxesmarker;
+var bonusbullets;
+
 
 
 ZombieGame.Game.prototype = {
@@ -37,6 +42,9 @@ ZombieGame.Game.prototype = {
 
 	create: function () {
 		zombieindex = 0;
+		boxindex = 0;
+		bulletsremaining = [10, 100, 1];
+		bonusbullets = 10;
 
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
@@ -84,17 +92,33 @@ ZombieGame.Game.prototype = {
 
 
 		this.timer1 = this.game.time.create(false);
-		this.timer1.loop(1000, function () {
-			var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
-			var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
-			zombies.set(zombies.children[zombieindex], "health", newhealth);
-			zombies.setAll('anchor.x', 0.5);
-			zombies.setAll('anchor.y', 0.5);
-			zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
+		this.timer1.loop(200, function () {
+			if (zombies.length >= 100) {} else {
+				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
+				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
+				zombies.set(zombies.children[zombieindex], "health", newhealth);
+				zombies.setAll('anchor.x', 0.5);
+				zombies.setAll('anchor.y', 0.5);
+				zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
 
-			zombieindex++
+				zombieindex++
+			}
 		}, this);
 		this.timer1.start();
+
+		boxes = this.add.group();
+		this.physics.arcade.enable(boxes);
+		boxes.enableBody = true;
+
+		var boxesmarkers = this.add.group();
+
+		this.timer2 = this.game.time.create(false);
+		this.timer2.loop(5000, function () {
+			var box = boxes.create(this.world.randomX, this.world.randomY, 'crate');
+			boxes.setAll('anchor.x', 0.5);
+			boxes.setAll('anchor.y', 0.5);
+		}, this);
+		this.timer2.start();
 
 		map.setCollisionBetween(109, 126);
 		map.setCollisionBetween(136, 153);
@@ -104,7 +128,7 @@ ZombieGame.Game.prototype = {
 		map.setCollisionBetween(244, 261);
 
 
-		map.setTileIndexCallback(129, this.collectbullets, this);
+
 
 		bulletstext = this.add.text(0, 0, "Bullets: " + bulletsremaining[selectedweapon], {
 			font: "60px Arial",
@@ -140,11 +164,13 @@ ZombieGame.Game.prototype = {
 
 	update: function () {
 		player.bringToTop();
+		minimap.bringToTop();
 		pointer.bringToTop();
 		player.frame = selectedweapon;
 		gunhud.frame = selectedweapon;
 		this.physics.arcade.collide(player, layer);
 		this.physics.arcade.collide(zombies, layer);
+		this.physics.arcade.collide(player, boxes, this.collectbullets);
 		this.physics.arcade.collide(bullets, layer, function (x, y) {
 			//x.x = -1337;
 			x.kill();
@@ -196,18 +222,21 @@ ZombieGame.Game.prototype = {
 			fireRate = 500;
 			bulletdamage = 3;
 			accuarcity = 15;
+			bonusbullets = 10;
 		} else
 		if (wasd.two.isDown) {
 			selectedweapon = 1
 			fireRate = 50;
 			bulletdamage = 15 / 10;
 			accuarcity = 35;
+			bonusbullets = 100;
 		} else
 		if (wasd.three.isDown) {
 			selectedweapon = 2
 			fireRate = 1000;
 			bulletdamage = 10;
 			accuarcity = 0;
+			bonusbullets = 1;
 		}
 
 		if (wasd.dbug.isDown) {
@@ -235,6 +264,7 @@ ZombieGame.Game.prototype = {
 				this.body(singleEnemy);
 			}, this.game.debug);
 		}
+		this.game.debug.text(this.game.time.fps || '--', 2, 14, "#000000");
 	},
 
 	fire: function () {
@@ -268,7 +298,7 @@ ZombieGame.Game.prototype = {
 	collectbullets: function (x, y) {
 		y.destroy();
 		score += 50;
-		bulletsremaining[selectedweapon] += 5;
+		bulletsremaining[selectedweapon] += bonusbullets;
 	},
 	zombieupdate: function (singleEnemy) {
 
