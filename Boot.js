@@ -5,11 +5,18 @@ var playsound = true;
 var desktop;
 
 var score = 0;
-var lastscore = 0;
+var bestscore;
 var canclick = false;
 var level;
 
 var debug = 0;
+
+if (!localStorage.getItem('myItemKey')) {
+	bestscore = 0;
+	localStorage.setItem('myItemKey', bestscore);
+} else {
+	bestscore = localStorage.getItem('myItemKey');
+}
 
 ZombieGame.Boot = function (game) { //declare the boot state
 

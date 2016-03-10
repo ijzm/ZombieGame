@@ -2,12 +2,23 @@ ZombieGame.GameOver = function (game) {};
 
 var music;
 var playbutton;
+var bestscoretext;
 
 ZombieGame.GameOver.prototype = {
 
 	preload: function () {},
 
 	create: function () {
+
+		if (score > bestscore) {
+			bestscore = score;
+		}
+
+		if (localStorage.getItem('myItemKey') <= bestscore) {
+			localStorage.setItem('myItemKey', bestscore);
+		} else {
+
+		}
 		this.game.add.sprite(0, 0, 'bg');
 		this.camera.y = 0;
 		this.camera.x = 0;
@@ -32,6 +43,13 @@ ZombieGame.GameOver.prototype = {
 			stroke: '#000000',
 			strokeThickness: 3,
 		});
+		bestscoretext = this.add.text(500, 0, bestscore, {
+			font: "60px Arial",
+			fill: "#FFFFFF",
+			stroke: '#000000',
+			strokeThickness: 3,
+		});
+
 
 	},
 
