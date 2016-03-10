@@ -16,7 +16,7 @@ var map;
 var pspeed = 300;
 
 var bulletstext;
-var bulletsremaining = [10, 100, 3];
+var bulletsremaining = [10, 100, 5];
 
 var scoretext;
 
@@ -41,6 +41,8 @@ var timelefttext;
 var maxtimeleft = 60;
 var nextbonus = 1000;
 
+var boxspawns = [];
+
 
 
 ZombieGame.Game.prototype = {
@@ -50,11 +52,12 @@ ZombieGame.Game.prototype = {
 	create: function () {
 		zombieindex = 0;
 		boxindex = 0;
-		bulletsremaining = [10, 100, 3];
+		bulletsremaining = [10, 100, 5];
 		bonusbullets = 10;
 		maxtimeleft = 60;
 		timeleft = maxtimeleft;
 		nextbonus = 1000;
+		boxspawns = [];
 
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
@@ -76,8 +79,15 @@ ZombieGame.Game.prototype = {
 		pointer.anchor.y = 0.5;
 		pointer.fixedToCamera = true;
 
+
+		while (map.searchTileIndex(42, boxspawns.length, false, layer) !== null) {
+			var tile = map.searchTileIndex(42, boxspawns.length, false, layer);
+			boxspawns.push([tile.x, tile.y]);
+
+		}
+
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		player = this.add.sprite(this.world.randomX, this.world.randomY, "char");
+		player = this.add.sprite(Math.floor(boxspawns[Math.floor(Math.random() * boxspawns.length) + 0][0] * 64), Math.floor(boxspawns[Math.floor(Math.random() * boxspawns.length) + 0][1] * 64), "char");
 		player.anchor.x = 0.5;
 		player.anchor.y = 0.5;
 		this.physics.arcade.enable(player);
@@ -123,7 +133,8 @@ ZombieGame.Game.prototype = {
 
 		this.timer2 = this.game.time.create(false);
 		this.timer2.loop(5000, function () {
-			var box = boxes.create(this.world.randomX, this.world.randomY, 'crate');
+			var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
+			var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64), Math.floor(boxspawns[spawnin][1] * 64), 'crate');
 			boxes.setAll('anchor.x', 0.5);
 			boxes.setAll('anchor.y', 0.5);
 			maxtimeleft--;
@@ -195,6 +206,9 @@ ZombieGame.Game.prototype = {
 		screen.alpha = 0;
 		screen.enableBody = true;
 		this.physics.arcade.enable(screen);
+
+
+
 	},
 
 	update: function () {
@@ -209,6 +223,10 @@ ZombieGame.Game.prototype = {
 			//x.x = -1337;
 			x.kill();
 		});
+
+		if (timeleft <= 0) {
+			this.game.state.start("GameOver")
+		}
 
 		var cursors = this.input.keyboard.createCursorKeys();
 		var wasd = {
@@ -262,8 +280,8 @@ ZombieGame.Game.prototype = {
 			selectedweapon = 1
 			fireRate = 50;
 			bulletdamage = 15 / 10;
-			accuarcity = 35;
-			bonusbullets = 100;
+			accuarcity = 40;
+			bonusbullets = 50;
 		} else
 		if (wasd.three.isDown) {
 			selectedweapon = 2
@@ -295,7 +313,11 @@ ZombieGame.Game.prototype = {
 
 		if (score >= nextbonus) {
 			nextbonus += 1000;
-			maxtimeleft += 5;
+			if (maxtimeleft >= 85) {
+				maxtimeleft = 90;
+			} else {
+				maxtimeleft += 5;
+			}
 		}
 
 	},

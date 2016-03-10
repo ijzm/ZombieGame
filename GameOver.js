@@ -24,8 +24,14 @@ ZombieGame.GameOver.prototype = {
 
 		music = this.add.audio('menumusic');
 		//music.loopFull();
-		score = lastscore;
-		score = 0;
+
+
+		scoretext = this.add.text(0, 0, score, {
+			font: "60px Arial",
+			fill: "#FFFFFF",
+			stroke: '#000000',
+			strokeThickness: 3,
+		});
 
 	},
 
