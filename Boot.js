@@ -25,15 +25,18 @@ ZombieGame.Boot.prototype = {
 	},
 
 	create: function () {
+
 		this.state.start('Preloader'); //start the Preloader state
 		if (this.game.device.desktop) {
 			desktop = 1;
 		} else {
 			desktop = 0;
-			// aspect ratio with letterboxing if needed
-			this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-			this.game.scale.pageAlignHorizontally = true;
-			this.game.scale.pageAlignVertically = true;
+			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+			this.scale.minWidth = 0;
+			this.scale.minHeight = 0;
+			this.scale.maxWidth = 1980;
+			this.scale.maxHeight = 1080;
+			this.game.scale.refresh();
 		}
 
 	}

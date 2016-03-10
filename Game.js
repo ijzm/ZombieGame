@@ -13,7 +13,7 @@ var accuarcity = 30;
 var layer;
 var map;
 
-var pspeed = 256;
+var pspeed = 300;
 
 var bulletstext;
 var bulletsremaining = [10, 100, 3];
@@ -36,6 +36,11 @@ var bonusbullets;
 
 var screen;
 
+var timeleft;
+var timelefttext;
+var maxtimeleft = 60;
+var nextbonus = 1000;
+
 
 
 ZombieGame.Game.prototype = {
@@ -47,6 +52,9 @@ ZombieGame.Game.prototype = {
 		boxindex = 0;
 		bulletsremaining = [10, 100, 3];
 		bonusbullets = 10;
+		maxtimeleft = 60;
+		timeleft = maxtimeleft;
+		nextbonus = 1000;
 
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
@@ -104,6 +112,14 @@ ZombieGame.Game.prototype = {
 				zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
 				zombieindex++;
 			}
+
+			timeleft--;
+
+			if (score >= nextbonus) {
+				nextbonus += 1000;
+				maxtimeleft += 5;
+			}
+
 		}, this);
 		this.timer1.start();
 
@@ -118,6 +134,7 @@ ZombieGame.Game.prototype = {
 			var box = boxes.create(this.world.randomX, this.world.randomY, 'crate');
 			boxes.setAll('anchor.x', 0.5);
 			boxes.setAll('anchor.y', 0.5);
+			maxtimeleft--;
 		}, this);
 		this.timer2.start();
 
@@ -154,6 +171,17 @@ ZombieGame.Game.prototype = {
 		gunhud = this.add.sprite(0, 600, "gunhud");
 		gunhud.anchor.y = 1;
 		gunhud.fixedToCamera = true;
+
+
+		timelefttext = this.add.text(350, 608, timeleft + "/" + maxtimeleft, {
+			font: "60px Arial",
+			fill: "#FFFFFF",
+			stroke: '#000000',
+			strokeThickness: 3,
+		});
+		timelefttext.anchor.x = 0.5;
+		timelefttext.anchor.y = 1;
+		timelefttext.fixedToCamera = true;
 
 
 		/*this.game.input.keyboard.onDownCallback = function (e) {
@@ -311,6 +339,7 @@ ZombieGame.Game.prototype = {
 	updatetext: function () {
 		bulletstext.setText(bulletsremaining[selectedweapon]);
 		scoretext.setText(score);
+		timelefttext.setText(timeleft + "/" + maxtimeleft);
 	},
 	collectbullets: function (x, y) {
 		y.destroy();
@@ -345,6 +374,7 @@ ZombieGame.Game.prototype = {
 				singleEnemy.destroy();
 				zombieindex--;
 				score += 100;
+				timeleft = maxtimeleft;
 			}, this);
 		}
 		if (this.overlap(singleEnemy, screen)) {
