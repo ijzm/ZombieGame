@@ -102,7 +102,7 @@ ZombieGame.Game.prototype = {
 
 
 		this.timer1 = this.game.time.create(false);
-		this.timer1.loop(1000, function () {
+		this.timer1.loop(500, function () {
 			if (zombies.length >= 100) {} else {
 				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
@@ -112,14 +112,6 @@ ZombieGame.Game.prototype = {
 				zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
 				zombieindex++;
 			}
-
-			timeleft--;
-
-			if (score >= nextbonus) {
-				nextbonus += 1000;
-				maxtimeleft += 5;
-			}
-
 		}, this);
 		this.timer1.start();
 
@@ -137,6 +129,12 @@ ZombieGame.Game.prototype = {
 			maxtimeleft--;
 		}, this);
 		this.timer2.start();
+
+		this.timer3 = this.game.time.create(false);
+		this.timer3.loop(5000, function () {
+			timeleft--;
+		}, this);
+		this.timer3.start();
 
 		map.setCollisionBetween(109, 126);
 		map.setCollisionBetween(136, 153);
@@ -295,7 +293,10 @@ ZombieGame.Game.prototype = {
 			}
 		}, this.game.physics.arcade)
 
-
+		if (score >= nextbonus) {
+			nextbonus += 1000;
+			maxtimeleft += 5;
+		}
 
 	},
 
