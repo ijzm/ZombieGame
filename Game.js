@@ -42,6 +42,7 @@ var maxtimeleft = 30;
 var nextbonus = 1000;
 
 var boxspawns = [];
+var fuckyou;
 
 
 
@@ -50,6 +51,7 @@ ZombieGame.Game.prototype = {
 	preload: function () {},
 
 	create: function () {
+		fuckyou = 0;
 		score = 0;
 		zombieindex = 0;
 		boxindex = 0;
@@ -111,19 +113,9 @@ ZombieGame.Game.prototype = {
 		zombies.enableBody = true;
 
 
-		this.timer1 = this.game.time.create(false);
-		this.timer1.loop(700, function () {
-			if (zombies.length >= 75) {} else {
-				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
-				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
-				zombies.set(zombies.children[zombieindex], "health", newhealth);
-				zombies.setAll('anchor.x', 0.5);
-				zombies.setAll('anchor.y', 0.5);
-				zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
-				zombieindex++;
-			}
-		}, this);
-		this.timer1.start();
+		for (i = 0; i < 75; i++) {
+			this.createzombie();
+		}
 
 		boxes = this.add.group();
 		this.physics.arcade.enable(boxes);
@@ -134,10 +126,10 @@ ZombieGame.Game.prototype = {
 		this.timer2 = this.game.time.create(false);
 		this.timer2.loop(5000, function () {
 			if (boxes.length >= 75) {} else {
-			var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
-			var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64), Math.floor(boxspawns[spawnin][1] * 64), 'crate');
-			boxes.setAll('anchor.x', 0.5);
-			boxes.setAll('anchor.y', 0.5);
+				var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
+				var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64), Math.floor(boxspawns[spawnin][1] * 64), 'crate');
+				boxes.setAll('anchor.x', 0.5);
+				boxes.setAll('anchor.y', 0.5);
 			}
 			maxtimeleft--;
 		}, this);
@@ -214,6 +206,9 @@ ZombieGame.Game.prototype = {
 	},
 
 	update: function () {
+		if (fuckyou) {
+			this.createzombie();
+		}
 		player.bringToTop();
 		minimap.bringToTop();
 		pointer.bringToTop();
@@ -404,6 +399,8 @@ ZombieGame.Game.prototype = {
 					timeleft += 5
 				}
 
+				fuckyou = 1;
+
 			}, this);
 		}
 		if (this.overlap(singleEnemy, screen)) {
@@ -412,5 +409,15 @@ ZombieGame.Game.prototype = {
 		}
 
 	},
+	createzombie: function () {
+		fuckyou = 0;
+		var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
+		var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
+		zombies.set(zombies.children[zombieindex], "health", newhealth);
+		zombies.setAll('anchor.x', 0.5);
+		zombies.setAll('anchor.y', 0.5);
+		zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
+		zombieindex++;
+	}
 
 };
