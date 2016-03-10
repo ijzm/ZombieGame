@@ -32,13 +32,13 @@ var pointer;
 var boxes;
 var boxindex = 0;
 var boxesmarker;
-var bonusbullets;
+var bonusbullets = [10, 50, 3];
 
 var screen;
 
 var timeleft;
 var timelefttext;
-var maxtimeleft = 60;
+var maxtimeleft = 30;
 var nextbonus = 1000;
 
 var boxspawns = [];
@@ -50,11 +50,11 @@ ZombieGame.Game.prototype = {
 	preload: function () {},
 
 	create: function () {
+		score = 0;
 		zombieindex = 0;
 		boxindex = 0;
 		bulletsremaining = [10, 100, 5];
-		bonusbullets = 10;
-		maxtimeleft = 60;
+		maxtimeleft = 30;
 		timeleft = maxtimeleft;
 		nextbonus = 1000;
 		boxspawns = [];
@@ -112,7 +112,7 @@ ZombieGame.Game.prototype = {
 
 
 		this.timer1 = this.game.time.create(false);
-		this.timer1.loop(500, function () {
+		this.timer1.loop(700, function () {
 			if (zombies.length >= 100) {} else {
 				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
@@ -274,21 +274,18 @@ ZombieGame.Game.prototype = {
 			fireRate = 500;
 			bulletdamage = 3;
 			accuarcity = 15;
-			bonusbullets = 10;
 		} else
 		if (wasd.two.isDown) {
 			selectedweapon = 1
 			fireRate = 50;
 			bulletdamage = 15 / 10;
 			accuarcity = 40;
-			bonusbullets = 50;
 		} else
 		if (wasd.three.isDown) {
 			selectedweapon = 2
 			fireRate = 1000;
 			bulletdamage = 10;
 			accuarcity = 0;
-			bonusbullets = 3;
 		}
 
 		if (wasd.dbug.isDown) {
@@ -313,8 +310,8 @@ ZombieGame.Game.prototype = {
 
 		if (score >= nextbonus) {
 			nextbonus += 1000;
-			if (maxtimeleft >= 85) {
-				maxtimeleft = 90;
+			if (maxtimeleft + 5 >= 60) {
+				maxtimeleft = 60;
 			} else {
 				maxtimeleft += 5;
 			}
@@ -367,7 +364,9 @@ ZombieGame.Game.prototype = {
 	collectbullets: function (x, y) {
 		y.destroy();
 		score += 50;
-		bulletsremaining[selectedweapon] += bonusbullets;
+		var ignacio = Math.floor(Math.random() * 3);
+		console.log(ignacio)
+		bulletsremaining[ignacio] += bonusbullets[ignacio];
 	},
 	zombieupdate: function (singleEnemy) {
 
@@ -397,7 +396,12 @@ ZombieGame.Game.prototype = {
 				singleEnemy.destroy();
 				zombieindex--;
 				score += 100;
-				timeleft = maxtimeleft;
+				if (timeleft + 5 >= maxtimeleft) {
+					timeleft = maxtimeleft;
+				} else {
+					timeleft += 5
+				}
+
 			}, this);
 		}
 		if (this.overlap(singleEnemy, screen)) {
