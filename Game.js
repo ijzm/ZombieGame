@@ -113,7 +113,7 @@ ZombieGame.Game.prototype = {
 
 		this.timer1 = this.game.time.create(false);
 		this.timer1.loop(700, function () {
-			if (zombies.length >= 100) {} else {
+			if (zombies.length >= 75) {} else {
 				var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 				var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
 				zombies.set(zombies.children[zombieindex], "health", newhealth);
@@ -133,10 +133,12 @@ ZombieGame.Game.prototype = {
 
 		this.timer2 = this.game.time.create(false);
 		this.timer2.loop(5000, function () {
+			if (boxes.length >= 75) {} else {
 			var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
 			var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64), Math.floor(boxspawns[spawnin][1] * 64), 'crate');
 			boxes.setAll('anchor.x', 0.5);
 			boxes.setAll('anchor.y', 0.5);
+			}
 			maxtimeleft--;
 		}, this);
 		this.timer2.start();
