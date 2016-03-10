@@ -53,6 +53,7 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('minimap', 'maps/minimap.png');
 		this.load.image('pointer', 'maps/pointer.png');
 		this.load.image('boxpointer', 'maps/boxpointer.png');
+		this.load.image('screen', 'assets/screen.png');
 
 
 
