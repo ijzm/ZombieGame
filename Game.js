@@ -131,7 +131,7 @@ ZombieGame.Game.prototype = {
 		this.timer2.start();
 
 		this.timer3 = this.game.time.create(false);
-		this.timer3.loop(5000, function () {
+		this.timer3.loop(1000, function () {
 			timeleft--;
 		}, this);
 		this.timer3.start();
