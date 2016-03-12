@@ -269,7 +269,7 @@ ZombieGame.Game.prototype = {
 		if (wasd.one.isDown) {
 			selectedweapon = 0
 			fireRate = 500;
-			bulletdamage = 3;
+			bulletdamage = 4;
 			accuarcity = 15;
 		} else
 		if (wasd.two.isDown) {
