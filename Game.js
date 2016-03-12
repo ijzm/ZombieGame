@@ -127,7 +127,7 @@ ZombieGame.Game.prototype = {
 		this.timer2.loop(5000, function () {
 			if (boxes.length >= 75) {} else {
 				var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
-				var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64), Math.floor(boxspawns[spawnin][1] * 64), 'crate');
+				var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64) + 32, Math.floor(boxspawns[spawnin][1] * 64) + 32, 'crate');
 				boxes.setAll('anchor.x', 0.5);
 				boxes.setAll('anchor.y', 0.5);
 			}
@@ -413,7 +413,7 @@ ZombieGame.Game.prototype = {
 		fuckyou = 0;
 		var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 		var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
-		zombies.set(zombies.children[zombieindex], "health", newhealth);
+		zombies.set(zombies.children[zombieindex] == null ? console.log("null") : zombies.children[zombieindex], "health", newhealth);
 		zombies.setAll('anchor.x', 0.5);
 		zombies.setAll('anchor.y', 0.5);
 		zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
