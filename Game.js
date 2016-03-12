@@ -31,7 +31,6 @@ var pointer;
 
 var boxes;
 var boxindex = 0;
-var boxesmarker;
 var bonusbullets = [10, 50, 3];
 
 var screen;
@@ -51,7 +50,7 @@ ZombieGame.Game.prototype = {
 	preload: function () {},
 
 	create: function () {
-		fuckyou = 0;
+		fuckyou = 60;
 		score = 0;
 		zombieindex = 0;
 		boxindex = 0;
@@ -60,7 +59,7 @@ ZombieGame.Game.prototype = {
 		timeleft = maxtimeleft;
 		nextbonus = 1000;
 		boxspawns = [];
-
+		//Map Stuff
 		map = this.add.tilemap('00');
 		map.addTilesetImage('tiles', 'tiles');
 
@@ -81,15 +80,8 @@ ZombieGame.Game.prototype = {
 		pointer.anchor.y = 0.5;
 		pointer.fixedToCamera = true;
 
-
-		while (map.searchTileIndex(42, boxspawns.length, false, layer) !== null) {
-			var tile = map.searchTileIndex(42, boxspawns.length, false, layer);
-			boxspawns.push([tile.x, tile.y]);
-
-		}
-
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		player = this.add.sprite(Math.floor(boxspawns[Math.floor(Math.random() * boxspawns.length) + 0][0] * 64), Math.floor(boxspawns[Math.floor(Math.random() * boxspawns.length) + 0][1] * 64), "char");
+		player = this.add.sprite(this.world.randomX, this.world.randomY, "char");
 		player.anchor.x = 0.5;
 		player.anchor.y = 0.5;
 		this.physics.arcade.enable(player);
@@ -113,23 +105,15 @@ ZombieGame.Game.prototype = {
 		zombies.enableBody = true;
 
 
-		for (i = 0; i < 75; i++) {
-			this.createzombie();
-		}
-
 		boxes = this.add.group();
 		this.physics.arcade.enable(boxes);
 		boxes.enableBody = true;
 
-		var boxesmarkers = this.add.group();
-
+		//timers
 		this.timer2 = this.game.time.create(false);
 		this.timer2.loop(5000, function () {
 			if (boxes.length >= 75) {} else {
-				var spawnin = Math.floor(Math.random() * boxspawns.length) + 0;
-				var box = boxes.create(Math.floor(boxspawns[spawnin][0] * 64) + 32, Math.floor(boxspawns[spawnin][1] * 64) + 32, 'crate');
-				boxes.setAll('anchor.x', 0.5);
-				boxes.setAll('anchor.y', 0.5);
+				this.createbox();
 			}
 			maxtimeleft--;
 		}, this);
@@ -150,7 +134,7 @@ ZombieGame.Game.prototype = {
 
 
 
-
+		//texts
 		bulletstext = this.add.text(64, 608, bulletsremaining[selectedweapon], {
 			font: "60px Arial",
 			fill: "#FFFFFF",
@@ -161,7 +145,7 @@ ZombieGame.Game.prototype = {
 		bulletstext.anchor.y = 1;
 		bulletstext.fixedToCamera = true;
 
-		scoretext = this.add.text(600, 608, score, {
+		scoretext = this.add.text(700, 608, score, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
@@ -176,7 +160,7 @@ ZombieGame.Game.prototype = {
 		gunhud.fixedToCamera = true;
 
 
-		timelefttext = this.add.text(350, 608, timeleft + "/" + maxtimeleft, {
+		timelefttext = this.add.text(400, 608, timeleft + "/" + maxtimeleft, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
@@ -206,8 +190,9 @@ ZombieGame.Game.prototype = {
 	},
 
 	update: function () {
-		if (fuckyou) {
+		if (fuckyou >= 1) {
 			this.createzombie();
+			fuckyou--;
 		}
 		player.bringToTop();
 		minimap.bringToTop();
@@ -293,17 +278,8 @@ ZombieGame.Game.prototype = {
 			}
 		}
 
-		pointer.cameraOffset.x = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).x * 2 + 600;
-		pointer.cameraOffset.y = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).y * 2 + 400;
-		//FIX SOMETHING
-		boxes.forEachAlive(function (singlebox) {
-			if (singlebox.inCamera) {
-				singlebox.body.speed = 0;
-				singlebox.body.velocity = 0;
-			} else {
-				this.moveToObject(singlebox, player);
-			}
-		}, this.game.physics.arcade)
+		pointer.cameraOffset.x = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).x + 700;
+		pointer.cameraOffset.y = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).y + 500;
 
 		if (score >= nextbonus) {
 			nextbonus += 1000;
@@ -362,7 +338,6 @@ ZombieGame.Game.prototype = {
 		y.destroy();
 		score += 50;
 		var ignacio = Math.floor(Math.random() * 3);
-		console.log(ignacio)
 		bulletsremaining[ignacio] += bonusbullets[ignacio];
 	},
 	zombieupdate: function (singleEnemy) {
@@ -399,7 +374,7 @@ ZombieGame.Game.prototype = {
 					timeleft += 5
 				}
 
-				fuckyou = 1;
+				fuckyou++;
 
 			}, this);
 		}
@@ -410,14 +385,32 @@ ZombieGame.Game.prototype = {
 
 	},
 	createzombie: function () {
-		fuckyou = 0;
 		var zombie = zombies.create(this.world.randomX, this.world.randomY, 'enemy');
 		var newhealth = Math.floor(Math.random() * zombiemaxhealth) + 1;
-		zombies.set(zombies.children[zombieindex] == null ? console.log("null") : zombies.children[zombieindex], "health", newhealth);
+		zombies.set(zombies.children[zombieindex] === null ? console.log("null") : zombies.children[zombieindex], "health", newhealth);
+
 		zombies.setAll('anchor.x', 0.5);
 		zombies.setAll('anchor.y', 0.5);
-		zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
+		zombies.children[zombieindex] === null ? console.log("null") : zombies.children[zombieindex].body.setSize(40, 40, 0, 0);
 		zombieindex++;
-	}
+	},
+	//THE BOXES MASON, WHAT DO THEY MEAN
+	createbox: function () {
+		var spawnx = this.world.randomX;
+		var spawny = this.world.randomY;
+		var FUUUUUUUUK = map.getTileWorldXY(spawnx, spawny, 64, 64, layer, true);
+		if (FUUUUUUUUK === null) {
+			this.createbox();
+		} else {
+			if (FUUUUUUUUK.index == 42) {
+				var box = boxes.create(FUUUUUUUUK.x * 64 + 32, FUUUUUUUUK.y * 64 + 32, 'crate');
+				boxes.setAll('anchor.x', 0.5);
+				boxes.setAll('anchor.y', 0.5);
+			} else {
+				this.createbox();
+			}
+
+		}
+	},
 
 };
