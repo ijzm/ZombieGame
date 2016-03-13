@@ -33,7 +33,7 @@ var boxes;
 var boxindex = 0;
 var bonusbullets = [10, 50, 3];
 
-var screen;
+var screene;
 
 var timeleft;
 var timelefttext;
@@ -177,13 +177,13 @@ ZombieGame.Game.prototype = {
 			}
 			*/
 
-		screen = this.add.sprite(800 / 2, 600 / 2, "screen");
-		screen.anchor.x = 0.5;
-		screen.anchor.y = 0.5;
-		screen.fixedToCamera = true;
-		screen.alpha = 0;
-		screen.enableBody = true;
-		this.physics.arcade.enable(screen);
+		screene = this.add.sprite(800 / 2, 600 / 2, "screen");
+		screene.anchor.x = 0.5;
+		screene.anchor.y = 0.5;
+		screene.fixedToCamera = true;
+		screene.alpha = 0;
+		screene.enableBody = true;
+		this.physics.arcade.enable(screene);
 
 
 
@@ -378,7 +378,7 @@ ZombieGame.Game.prototype = {
 
 			}, this);
 		}
-		if (this.overlap(singleEnemy, screen)) {
+		if (this.overlap(singleEnemy, screene)) {
 
 			this.collide(singleEnemy, layer);
 		}
