@@ -31,15 +31,15 @@ ZombieGame.MainMenu.prototype = {
 		this.camera.y = 0;
 		this.camera.x = 0;
 
-		playbutton = this.add.button(780, 350, "playbutton", this.playTheGame, this);
+		playbutton = this.add.button(780, 375, "playbutton", this.playTheGame, this);
 		playbutton.anchor.x = 1;
 		playbutton.anchor.y = 1;
 
-		helpbutton = this.add.button(780, 450, "helpbutton", this.help, this);
+		helpbutton = this.add.button(780, 475, "helpbutton", this.help, this);
 		helpbutton.anchor.x = 1;
 		helpbutton.anchor.y = 1;
 
-		creditsbutton = this.add.button(780, 550, "creditsbutton", this.credits, this);
+		creditsbutton = this.add.button(780, 575, "creditsbutton", this.credits, this);
 		creditsbutton.anchor.x = 1;
 		creditsbutton.anchor.y = 1;
 
@@ -49,7 +49,8 @@ ZombieGame.MainMenu.prototype = {
 		help = this.game.add.sprite(0, 0, 'help');
 		help.alpha = 0
 
-		menubutton = this.add.button(20, 520, "menubutton", this.mainmenu, this);
+		menubutton = this.add.button(20, 575, "menubutton", this.mainmenu, this);
+		menubutton.anchor.y = 1;
 		menubutton.alpha = 0;
 
 		music = this.add.audio('menumusic');
