@@ -48,6 +48,8 @@ var cu, cr, cd, cl;
 var joystiick;
 
 var hud;
+var gunhud2;
+var guntween;
 
 
 
@@ -172,6 +174,9 @@ ZombieGame.Game.prototype = {
 
 		gunhud = this.add.sprite(0, 0, "gunhud");
 		gunhud.fixedToCamera = true;
+		gunhud2 = this.add.sprite(0, 64, "gunhud2");
+		gunhud2.fixedToCamera = true;
+		//	gunhud2.alpha = 0;
 
 
 		timelefttext = this.add.text(400, 0, timeleft + "/" + maxtimeleft, {
@@ -240,6 +245,17 @@ ZombieGame.Game.prototype = {
 		}
 		this.createplayer();
 		this.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
+		gunhud2.alpha = 0;
+		guntween = this.game.add.tween(gunhud2).to({
+			alpha: 0
+		}, 500);
+
+		guntween.onComplete.add(function () {
+			this.game.add.tween(gunhud2).to({
+				alpha: 0
+			}, 500);
+		}, this);
+
 	},
 
 	update: function () {
@@ -260,9 +276,11 @@ ZombieGame.Game.prototype = {
 		scoretext.bringToTop();
 		timelefttext.bringToTop();
 		gunhud.bringToTop();
+		gunhud2.bringToTop();
 		bulletstext.bringToTop();
 		player.frame = selectedweapon;
 		gunhud.frame = selectedweapon;
+		gunhud2.frame = selectedweapon;
 
 		this.physics.arcade.collide(player, layer);
 		this.physics.arcade.collide(player, boxes, this.collectbullets);
@@ -394,6 +412,9 @@ ZombieGame.Game.prototype = {
 		score += 50;
 		var ignacio = Math.floor(Math.random() * 3);
 		bulletsremaining[ignacio] += bonusbullets[ignacio];
+		gunhud2.alpha = 1;
+		guntween.start();
+
 	},
 	zombieupdate: function (singleEnemy) {
 
