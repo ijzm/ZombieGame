@@ -7,16 +7,27 @@ var creditsbutton;
 var menubutton;
 var credits;
 var help;
+var bg;
+var tween;
+var h, w;
+var logo;
 
 ZombieGame.MainMenu.prototype = {
 
-	preload: function () {},
+	preload: function () {
+		this.game.load.script('filterX', 'https://cdn.rawgit.com/photonstorm/phaser/master/filters/BlurX.js');
+		this.game.load.script('filterY', 'https://cdn.rawgit.com/photonstorm/phaser/master/filters/BlurY.js');
+	},
 
 	create: function () {
 
-		this.game.add.sprite(0, 0, 'bg');
-
-		this.game.add.sprite(20, 20, 'logo');
+		bg = this.game.add.sprite(0, 0, 'bg');
+		var blurX = this.game.add.filter('BlurX');
+		var blurY = this.game.add.filter('BlurY')
+		bg.filters = [blurX, blurY];
+		logo = this.game.add.sprite(0, 0, 'logo');
+		logo.width *= 0.75
+		logo.height *= 0.75
 
 		this.camera.y = 0;
 		this.camera.x = 0;
@@ -45,6 +56,10 @@ ZombieGame.MainMenu.prototype = {
 		music = this.add.audio('menumusic');
 		music.loopFull();
 
+		var tween = this.game.add.tween(bg).to({
+			x: [-bg.width + 800, 0, -bg.width + 800, 0, 0],
+			y: [-bg.height + 600, -bg.height / 2, 0, -bg.height + 600, 0]
+		}, 15000, null, true, 0, -1);
 
 	},
 

@@ -43,6 +43,12 @@ var nextbonus = 1000;
 var boxspawns = [];
 var fuckyou;
 
+var controlimage;
+var cu, cr, cd, cl;
+var joystiick;
+
+
+
 
 
 ZombieGame.Game.prototype = {
@@ -50,6 +56,7 @@ ZombieGame.Game.prototype = {
 	preload: function () {},
 
 	create: function () {
+
 		fuckyou = 60;
 		score = 0;
 		zombieindex = 0;
@@ -70,9 +77,9 @@ ZombieGame.Game.prototype = {
 		crates.enableBody = true;
 		map.createFromTiles(129, 1, "crate", layer, crates);
 
-		minimap = this.add.sprite(800, 600, "minimap");
+		minimap = this.add.sprite(800, 0, "minimap");
 		minimap.anchor.x = 1;
-		minimap.anchor.y = 1;
+		minimap.anchor.y = 0;
 		minimap.fixedToCamera = true;
 
 		pointer = this.add.sprite(0, 0, "pointer");
@@ -90,6 +97,7 @@ ZombieGame.Game.prototype = {
 
 
 		this.camera.follow(player);
+
 
 		bullets = this.add.group();
 		bullets.enableBody = true;
@@ -135,39 +143,37 @@ ZombieGame.Game.prototype = {
 
 
 		//texts
-		bulletstext = this.add.text(64, 608, bulletsremaining[selectedweapon], {
+		bulletstext = this.add.text(64, 0, bulletsremaining[selectedweapon], {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3
 		});
 		bulletstext.anchor.x = 0;
-		bulletstext.anchor.y = 1;
+		bulletstext.anchor.y = 0;
 		bulletstext.fixedToCamera = true;
 
-		scoretext = this.add.text(700, 608, score, {
+		scoretext = this.add.text(700, 0, score, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
 		});
 		scoretext.anchor.x = 1;
-		scoretext.anchor.y = 1;
+		scoretext.anchor.y = 0;
 		scoretext.fixedToCamera = true;
 
-		gunhud = this.add.sprite(0, 600, "gunhud");
-		gunhud.anchor.y = 1;
+		gunhud = this.add.sprite(0, 0, "gunhud");
 		gunhud.fixedToCamera = true;
 
 
-		timelefttext = this.add.text(400, 608, timeleft + "/" + maxtimeleft, {
+		timelefttext = this.add.text(400, 0, timeleft + "/" + maxtimeleft, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
 		});
 		timelefttext.anchor.x = 0.5;
-		timelefttext.anchor.y = 1;
 		timelefttext.fixedToCamera = true;
 
 
@@ -185,11 +191,60 @@ ZombieGame.Game.prototype = {
 		screene.enableBody = true;
 		this.physics.arcade.enable(screene);
 
+		if (!desktop) {
+			//cu, cur, cr, cdr, cd, cdl, cl;
+			controlimage = this.add.sprite(0, this.game.height, "controls");
+			controlimage.anchor.y = 1;
+			controlimage.fixedToCamera = true;
 
+
+
+			cu = this.add.sprite(53, this.game.height - (53 * 3), "control");
+			cu.fixedToCamera = true;
+			this.physics.arcade.enable(cu);
+			cu.enableBody = true;
+
+
+			cl = this.add.sprite(0, this.game.height - (53 * 2), "control");
+			this.physics.arcade.enable(cl);
+			cl.fixedToCamera = true;
+
+			cr = this.add.sprite(53 * 2, this.game.height - (53 * 2), "control");
+			this.physics.arcade.enable(cr);
+			cr.fixedToCamera = true;
+
+
+			cd = this.add.sprite(53, this.game.height - (53), "control");
+			this.physics.arcade.enable(cd);
+			cd.fixedToCamera = true;
+
+
+
+			joystiick = this.game.add.sprite(53, this.game.height - 53 * 2, "control");
+			joystiick.fixedToCamera = true;
+			joystiick.inputEnabled = true;
+			joystiick.input.enableDrag(false, true, false);
+			joystiick.enableBody = true;
+			this.physics.arcade.enable(joystiick);
+			//joystiick.input.boundsSprite = controlimage;
+
+
+
+		}
 
 	},
 
 	update: function () {
+		/*if (this.physics.arcade.overlap(joystiick, cu)) {
+			console.log("TEST");
+			player.body.velocity.y = -pspeed;
+		}*/
+
+
+		function test() {
+
+		}
+
 		if (fuckyou >= 1) {
 			this.createzombie();
 			fuckyou--;
@@ -222,17 +277,17 @@ ZombieGame.Game.prototype = {
 			dbug: this.input.keyboard.addKey(220),
 
 		};
-		if (wasd.up.isDown || cursors.up.isDown) {
+		if (wasd.up.isDown || cursors.up.isDown /* || this.physics.arcade.overlap(joystiick, cu)*/ ) {
 			player.body.velocity.y = -pspeed;
-		} else if (wasd.down.isDown || cursors.down.isDown) {
+		} else if (wasd.down.isDown || cursors.down.isDown /* || this.physics.arcade.overlap(joystiick, cd)*/ ) {
 			player.body.velocity.y = pspeed;
 
 		} else {
 			player.body.velocity.y = 0;
 		}
-		if (wasd.left.isDown || cursors.left.isDown) {
+		if (wasd.left.isDown || cursors.left.isDown /* || this.physics.arcade.overlap(joystiick, cl)*/ ) {
 			player.body.velocity.x = -pspeed;
-		} else if (wasd.right.isDown || cursors.right.isDown) {
+		} else if (wasd.right.isDown || cursors.right.isDown /* || this.physics.arcade.overlap(joystiick, cr)*/ ) {
 			player.body.velocity.x = pspeed;
 		} else {
 			player.body.velocity.x = 0;
@@ -256,14 +311,12 @@ ZombieGame.Game.prototype = {
 			fireRate = 500;
 			bulletdamage = 4;
 			accuarcity = 15;
-		} else
-		if (wasd.two.isDown) {
+		} else if (wasd.two.isDown) {
 			selectedweapon = 1
 			fireRate = 50;
 			bulletdamage = 15 / 10;
 			accuarcity = 40;
-		} else
-		if (wasd.three.isDown) {
+		} else if (wasd.three.isDown) {
 			selectedweapon = 2
 			fireRate = 1000;
 			bulletdamage = 10;
@@ -279,7 +332,7 @@ ZombieGame.Game.prototype = {
 		}
 
 		pointer.cameraOffset.x = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).x + 700;
-		pointer.cameraOffset.y = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).y + 500;
+		pointer.cameraOffset.y = (map.getTileWorldXY(player.x, player.y, 64, 64, layer, true)).y;
 
 		if (score >= nextbonus) {
 			nextbonus += 1000;

@@ -23,7 +23,10 @@ ZombieGame.Preloader = function (game) { //declare the Preloader function
 
 };
 
+var text;
+
 ZombieGame.Preloader.prototype = {
+
 
 	preload: function () {
 		//load all the required assets in the game - sprites, music, fonts,etc
@@ -39,7 +42,7 @@ ZombieGame.Preloader.prototype = {
 
 		this.load.spritesheet('char', 'assets/player.png', 56, 43);
 		this.load.spritesheet('gunhud', 'assets/gunhud.png', 64, 64);
-		this.load.image('bg', 'assets/bg.png');
+
 		this.load.image('credits', 'assets/credits.png');
 		this.load.image('help', 'assets/help.png');
 
@@ -52,14 +55,18 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('crate', 'assets/crate.png');
 		this.load.image('minimap', 'maps/minimap.png');
 		this.load.image('pointer', 'maps/pointer.png');
-		this.load.image('boxpointer', 'maps/boxpointer.png');
+		this.load.image('bg', 'maps/bg.png');
 		this.load.image('screen', 'assets/screen.png');
-
-
+		this.load.image('controls', 'assets/controls.png');
+		this.load.image('control', 'assets/control.png');
 
 		this.load.audio('menumusic', 'assets/menumusic.mp3');
 
+
+
 		this.time.advancedTiming = true;
+
+		this.game.load.start();
 
 
 	},
@@ -75,5 +82,7 @@ ZombieGame.Preloader.prototype = {
 		}
 
 	}
+
+
 
 };
