@@ -69,22 +69,31 @@ ZombieGame.MainMenu.prototype = {
 		music.stop();
 	},
 	help: function () {
-		music.stop();
 		console.log("help");
 		help.alpha = 1;
 		menubutton.alpha = 1;
+		logo.alpha = 0;
+		playbutton.alpha = 0;
+		helpbutton.alpha = 0;
+		creditsbutton.alpha = 0;
 	},
 	credits: function () {
-		music.stop();
 		console.log("credits");
 		menubutton.alpha = 1;
 		credits.alpha = 1;
+		logo.alpha = 0;
+		playbutton.alpha = 0;
+		helpbutton.alpha = 0;
+		creditsbutton.alpha = 0;
 	},
 	mainmenu: function () {
-		music.loopFull();
 		menubutton.alpha = 0;
 		credits.alpha = 0;
 		help.alpha = 0;
+		logo.alpha = 1;
+		playbutton.alpha = 1;
+		helpbutton.alpha = 1;
+		creditsbutton.alpha = 1;
 	},
 
 };
