@@ -47,14 +47,14 @@ ZombieGame.GameOver.prototype = {
 		music = this.add.audio('menumusic');
 		//music.loopFull();
 
-
-		scoretext = this.add.text(0, 0, score, {
+		this.add.sprite(10, 300, "black");
+		scoretext = this.add.text(20, 350, "Score:" + " " + score, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
 		});
-		bestscoretext = this.add.text(500, 0, bestscore, {
+		bestscoretext = this.add.text(20, 450, "HighScore:" + " " + bestscore, {
 			font: "60px Arial",
 			fill: "#FFFFFF",
 			stroke: '#000000',
