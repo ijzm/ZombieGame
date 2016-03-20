@@ -47,6 +47,8 @@ var controlimage;
 var cu, cr, cd, cl;
 var joystiick;
 
+var hud;
+
 
 
 
@@ -76,6 +78,9 @@ ZombieGame.Game.prototype = {
 		crates = this.add.group();
 		crates.enableBody = true;
 		map.createFromTiles(129, 1, "crate", layer, crates);
+
+		hud = this.add.sprite(0, 0, "hud");
+		hud.fixedToCamera = true;
 
 		minimap = this.add.sprite(800, 0, "minimap");
 		minimap.anchor.x = 1;
@@ -257,10 +262,16 @@ ZombieGame.Game.prototype = {
 			fuckyou--;
 		}
 		player.bringToTop();
+		hud.bringToTop();
 		minimap.bringToTop();
 		pointer.bringToTop();
+		scoretext.bringToTop();
+		timelefttext.bringToTop();
+		gunhud.bringToTop();
+		bulletstext.bringToTop();
 		player.frame = selectedweapon;
 		gunhud.frame = selectedweapon;
+
 		this.physics.arcade.collide(player, layer);
 		this.physics.arcade.collide(player, boxes, this.collectbullets);
 		this.physics.arcade.collide(bullets, layer, function (x, y) {

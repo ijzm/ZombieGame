@@ -39,6 +39,7 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('screen', 'assets/screen.png');
 		this.load.image('controls', 'assets/controls.png');
 		this.load.image('control', 'assets/control.png');
+		this.load.image('hud', 'assets/hud.png');
 
 		this.load.audio('menumusic', 'assets/menumusic.mp3');
 
