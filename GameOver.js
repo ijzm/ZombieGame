@@ -66,13 +66,11 @@ ZombieGame.GameOver.prototype = {
 
 	update: function () {},
 	playTheGame: function () {
-		console.log("PLAY");
 		this.state.start("Game");
 		music.stop();
 	},
 
 	mainmenu: function () {
-		console.log("MainMenu");
 		this.state.start("MainMenu");
 	}
 

@@ -65,12 +65,10 @@ ZombieGame.MainMenu.prototype = {
 
 	update: function () {},
 	playTheGame: function () {
-		console.log("PLAY");
 		this.state.start("Game");
 		music.stop();
 	},
 	help: function () {
-		console.log("help");
 		help.alpha = 1;
 		menubutton.alpha = 1;
 		logo.alpha = 0;
@@ -79,7 +77,6 @@ ZombieGame.MainMenu.prototype = {
 		creditsbutton.alpha = 0;
 	},
 	credits: function () {
-		console.log("credits");
 		menubutton.alpha = 1;
 		credits.alpha = 1;
 		logo.alpha = 0;
