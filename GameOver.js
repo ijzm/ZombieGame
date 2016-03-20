@@ -36,11 +36,11 @@ ZombieGame.GameOver.prototype = {
 			y: [-bg.height + 600, -bg.height / 2, 0, -bg.height + 600, 0]
 		}, 15000, null, true, 0, -1);
 
-		playbutton = this.add.button(780, 350, "retrybutton", this.playTheGame, this);
+		playbutton = this.add.button(780, 375, "retrybutton", this.playTheGame, this);
 		playbutton.anchor.x = 1;
 		playbutton.anchor.y = 1;
 
-		playbutton = this.add.button(780, 450, "menubutton", this.mainmenu, this);
+		playbutton = this.add.button(780, 475, "menubutton", this.mainmenu, this);
 		playbutton.anchor.x = 1;
 		playbutton.anchor.y = 1;
 
