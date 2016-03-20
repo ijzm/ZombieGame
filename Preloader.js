@@ -15,8 +15,6 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('helpbutton', 'assets/helpbutton.png');
 		this.load.image('menubutton', 'assets/menubutton.png');
 		this.load.image('retrybutton', 'assets/retrybutton.png');
-		this.load.spritesheet('button', 'assets/button.png', 64, 64);
-		this.load.image('buttonlocked', 'assets/buttonlocked.png');
 		this.load.image('soundbutton', 'assets/soundbutton.png');
 		this.load.image('logo', 'assets/logo.png');
 
