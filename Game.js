@@ -5,10 +5,10 @@ var zombies;
 var crates;
 
 var bullets;
-var fireRate = 500;
+var fireRate = [500, 50, 1000];
 var nextFire = 0;
-var bulletdamage = 3;
-var accuarcity = 30;
+var bulletdamage = [4, 15 / 10, 10];
+var accuarcity = [15, 40, 0];
 
 var layer;
 var map;
@@ -64,6 +64,9 @@ ZombieGame.Game.prototype = {
 		zombieindex = 0;
 		boxindex = 0;
 		bulletsremaining = [10, 100, 5];
+		fireRate = [500, 50, 1000];
+		bulletdamage = [4, 15 / 10, 10];
+		accuarcity = [15, 40, 0];
 		maxtimeleft = 30;
 		timeleft = maxtimeleft;
 		nextbonus = 1000;
@@ -95,14 +98,6 @@ ZombieGame.Game.prototype = {
 		this.physics.startSystem(Phaser.Physics.ARCADE);
 
 		var px, py;
-
-
-
-
-
-
-
-
 
 		bullets = this.add.group();
 		bullets.enableBody = true;
@@ -244,6 +239,7 @@ ZombieGame.Game.prototype = {
 
 		}
 		this.createplayer();
+		this.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
 	},
 
 	update: function () {
@@ -322,19 +318,10 @@ ZombieGame.Game.prototype = {
 
 		if (wasd.one.isDown) {
 			selectedweapon = 0
-			fireRate = 500;
-			bulletdamage = 4;
-			accuarcity = 15;
 		} else if (wasd.two.isDown) {
 			selectedweapon = 1
-			fireRate = 50;
-			bulletdamage = 15 / 10;
-			accuarcity = 40;
 		} else if (wasd.three.isDown) {
 			selectedweapon = 2
-			fireRate = 1000;
-			bulletdamage = 10;
-			accuarcity = 0;
 		}
 
 		if (wasd.dbug.isDown) {
@@ -376,13 +363,13 @@ ZombieGame.Game.prototype = {
 	fire: function () {
 		if (bulletsremaining[selectedweapon]) {
 			if (this.time.now > nextFire && bullets.countDead() > 0) {
-				nextFire = this.time.now + fireRate;
+				nextFire = this.time.now + fireRate[selectedweapon];
 				var bullet = bullets.getFirstExists(false);
 				bullet.anchor.x = 0.5;
 				bullet.anchor.x = 0.5;
 				bullet.reset(player.x, player.y);
-				bullet.damage = bulletdamage;
-				bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(accuarcity), this.input.activePointer.worldY + this.weaponpresition(accuarcity), 800)
+				bullet.damage = bulletdamage[selectedweapon];
+				bullet.rotation = this.physics.arcade.moveToXY(bullet, this.input.activePointer.worldX + this.weaponpresition(accuarcity[selectedweapon]), this.input.activePointer.worldY + this.weaponpresition(accuarcity[selectedweapon]), 800)
 
 
 				bullet.body.setSize(7, 7, 0, 0);
@@ -500,6 +487,25 @@ ZombieGame.Game.prototype = {
 				this.createplayer();
 			}
 		}
-	}
+	},
+
+	mouseWheel: function (event) {
+		if (this.input.mouse.wheelDelta === Phaser.Mouse.WHEEL_UP) {
+			if (selectedweapon === 0) {
+				selectedweapon = 2;
+			} else {
+				selectedweapon--;
+			}
+
+		} else {
+			if (selectedweapon === 2) {
+				selectedweapon = 0;
+			} else {
+				selectedweapon++;
+			}
+
+		}
+
+	},
 
 };
