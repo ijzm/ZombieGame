@@ -140,6 +140,13 @@ ZombieGame.Game.prototype = {
 		map.setCollisionBetween(217, 234);
 		map.setCollisionBetween(244, 261);
 
+		map.setCollisionBetween(280, 288);
+		map.setCollisionBetween(307, 315);
+		map.setCollisionBetween(334, 342);
+		map.setCollisionBetween(361, 368);
+		map.setCollisionBetween(388, 396);
+		map.setCollisionBetween(415, 423);
+
 
 
 		//texts
@@ -455,7 +462,7 @@ ZombieGame.Game.prototype = {
 		if (FUUUUUUUUK === null) {
 			this.createbox();
 		} else {
-			if (FUUUUUUUUK.index == 42) {
+			if (FUUUUUUUUK.index == 96) {
 				var box = boxes.create(FUUUUUUUUK.x * 64 + 32, FUUUUUUUUK.y * 64 + 32, 'crate');
 				boxes.setAll('anchor.x', 0.5);
 				boxes.setAll('anchor.y', 0.5);

@@ -15,8 +15,7 @@ var logo;
 ZombieGame.MainMenu.prototype = {
 
 	preload: function () {
-		this.game.load.script('filterX', 'https://cdn.rawgit.com/photonstorm/phaser/master/filters/BlurX.js');
-		this.game.load.script('filterY', 'https://cdn.rawgit.com/photonstorm/phaser/master/filters/BlurY.js');
+
 	},
 
 	create: function () {
