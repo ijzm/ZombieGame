@@ -93,15 +93,15 @@ ZombieGame.Game.prototype = {
 		pointer.fixedToCamera = true;
 
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		player = this.add.sprite(this.world.randomX, this.world.randomY, "char");
-		player.anchor.x = 0.5;
-		player.anchor.y = 0.5;
-		this.physics.arcade.enable(player);
-		player.body.setSize(40, 40, 0, 0);
-		player.body.collideWorldBounds = true;
+
+		var px, py;
 
 
-		this.camera.follow(player);
+
+
+
+
+
 
 
 		bullets = this.add.group();
@@ -243,7 +243,7 @@ ZombieGame.Game.prototype = {
 
 
 		}
-
+		this.createplayer();
 	},
 
 	update: function () {
@@ -252,10 +252,6 @@ ZombieGame.Game.prototype = {
 			player.body.velocity.y = -pspeed;
 		}*/
 
-
-		function test() {
-
-		}
 
 		if (fuckyou >= 1) {
 			this.createzombie();
@@ -372,8 +368,9 @@ ZombieGame.Game.prototype = {
 			bullets.forEach(function (singleEnemy) {
 				this.body(singleEnemy);
 			}, this.game.debug);
+			this.game.debug.text(this.game.time.fps || '--', 2, 14, "#000000");
 		}
-		this.game.debug.text(this.game.time.fps || '--', 2, 14, "#000000");
+
 	},
 
 	fire: function () {
@@ -483,5 +480,26 @@ ZombieGame.Game.prototype = {
 
 		}
 	},
+
+	createplayer: function () {
+		px = this.game.world.randomX;
+		py = this.game.world.randomY;
+		var foo = map.getTileWorldXY(px, py, 64, 64, layer, true);
+		if (foo === null) {
+			this.createplayer();
+		} else {
+			if (foo.index == 96) {
+				player = this.add.sprite(px, py, "char");
+				player.anchor.x = 0.5;
+				player.anchor.y = 0.5;
+				this.physics.arcade.enable(player);
+				player.body.setSize(40, 40, 0, 0);
+				player.body.collideWorldBounds = true;
+				this.camera.follow(player);
+			} else {
+				this.createplayer();
+			}
+		}
+	}
 
 };
