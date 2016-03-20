@@ -280,7 +280,6 @@ ZombieGame.Game.prototype = {
 		bulletstext.bringToTop();
 		player.frame = selectedweapon;
 		gunhud.frame = selectedweapon;
-		gunhud2.frame = selectedweapon;
 
 		this.physics.arcade.collide(player, layer);
 		this.physics.arcade.collide(player, boxes, this.collectbullets);
@@ -412,6 +411,7 @@ ZombieGame.Game.prototype = {
 		score += 50;
 		var ignacio = Math.floor(Math.random() * 3);
 		bulletsremaining[ignacio] += bonusbullets[ignacio];
+		gunhud2.frame = ignacio;
 		gunhud2.alpha = 1;
 		guntween.start();
 
