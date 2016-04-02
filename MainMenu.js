@@ -12,6 +12,8 @@ var tween;
 var h, w;
 var logo;
 
+var soundbutton;
+
 ZombieGame.MainMenu.prototype = {
 
 	preload: function () {
@@ -30,6 +32,21 @@ ZombieGame.MainMenu.prototype = {
 
 		this.camera.y = 0;
 		this.camera.x = 0;
+
+		soundbutton = this.game.add.button(800, 0, 'soundbutton', function () {
+			/*console.log(playsound);
+			playsound ? function () {
+				playsound = false;
+				menumusic.pause();
+				console.log("playsound:" + playsound);
+			} : function () {
+				playsound = true;
+				menumusic.resume();
+			}*/
+			playsound ? console.log("test") : console.log("notest");
+		});
+		soundbutton.anchor.x = 1;
+		soundbutton.fixedToCamera = true;
 
 		playbutton = this.add.button(780, 375, "playbutton", this.playTheGame, this);
 		playbutton.anchor.x = 1;
@@ -66,7 +83,6 @@ ZombieGame.MainMenu.prototype = {
 	update: function () {},
 	playTheGame: function () {
 		this.state.start("Game");
-		music.stop();
 	},
 	help: function () {
 		help.alpha = 1;
@@ -75,6 +91,9 @@ ZombieGame.MainMenu.prototype = {
 		playbutton.alpha = 0;
 		helpbutton.alpha = 0;
 		creditsbutton.alpha = 0;
+
+		creditsbutton.inputEnabled = false;
+		playbutton.inputEnabled = false;
 	},
 	credits: function () {
 		menubutton.alpha = 1;
@@ -83,6 +102,9 @@ ZombieGame.MainMenu.prototype = {
 		playbutton.alpha = 0;
 		helpbutton.alpha = 0;
 		creditsbutton.alpha = 0;
+
+		helpbutton.inputEnabled = false;
+		playbutton.inputEnabled = false;
 	},
 	mainmenu: function () {
 		menubutton.alpha = 0;
@@ -92,6 +114,10 @@ ZombieGame.MainMenu.prototype = {
 		playbutton.alpha = 1;
 		helpbutton.alpha = 1;
 		creditsbutton.alpha = 1;
+
+		creditsbutton.inputEnabled = true;
+		helpbutton.inputEnabled = true;
+		playbutton.inputEnabled = true;
 	},
 
 };

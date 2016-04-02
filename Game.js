@@ -256,6 +256,19 @@ ZombieGame.Game.prototype = {
 			}, 500);
 		}, this);
 
+		soundbutton = this.game.add.button(800, 0, 'soundbutton', function () {
+			playsound ? function () {
+				playsound = false;
+				menumusic.pause();
+			} : function () {
+				playsound = true;
+				menumusic.resume();
+			}
+		});
+		soundbutton.anchor.x = 1;
+		soundbutton.fixedToCamera = true;
+
+
 	},
 
 	update: function () {
