@@ -1,6 +1,5 @@
 ZombieGame.MainMenu = function (game) {};
 
-var music;
 var playbutton;
 var helpbutton;
 var creditsbutton;
@@ -12,7 +11,7 @@ var tween;
 var h, w;
 var logo;
 
-var soundbutton;
+var musicbutton;
 
 ZombieGame.MainMenu.prototype = {
 
@@ -33,19 +32,29 @@ ZombieGame.MainMenu.prototype = {
 		this.camera.y = 0;
 		this.camera.x = 0;
 
-		soundbutton = this.game.add.button(800, 0, 'soundbutton', function () {
-			/*console.log(playsound);
-			playsound ? function () {
+		musicbutton = this.game.add.button(800, 600, 'musicbutton', function () {
+			if (playmusic) {
+				playmusic = false;
+				music.pause();
+			} else {
+				playmusic = true;
+				music.resume();
+			}
+		});
+		musicbutton.anchor.x = 1;
+		musicbutton.anchor.y = 1;
+		musicbutton.fixedToCamera = true;
+
+		soundbutton = this.game.add.button(800 - 16, 600, 'soundbutton', function () {
+			if (playsound) {
 				playsound = false;
-				menumusic.pause();
-				console.log("playsound:" + playsound);
-			} : function () {
+			} else {
 				playsound = true;
-				menumusic.resume();
-			}*/
-			playsound ? console.log("test") : console.log("notest");
+			}
+
 		});
 		soundbutton.anchor.x = 1;
+		soundbutton.anchor.y = 1;
 		soundbutton.fixedToCamera = true;
 
 		playbutton = this.add.button(780, 375, "playbutton", this.playTheGame, this);
@@ -70,8 +79,11 @@ ZombieGame.MainMenu.prototype = {
 		menubutton.anchor.y = 1;
 		menubutton.alpha = 0;
 
-		music = this.add.audio('menumusic');
-		music.loopFull();
+
+		console.log(music.isPlaying)
+
+
+
 
 		var tween = this.game.add.tween(bg).to({
 			x: [-bg.width + 800, 0, -bg.width + 800, 0, 0],

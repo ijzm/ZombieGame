@@ -256,16 +256,30 @@ ZombieGame.Game.prototype = {
 			}, 500);
 		}, this);
 
-		soundbutton = this.game.add.button(800, 0, 'soundbutton', function () {
-			playsound ? function () {
-				playsound = false;
-				menumusic.pause();
-			} : function () {
-				playsound = true;
-				menumusic.resume();
+		musicbutton = this.game.add.button(800, 600, 'musicbutton', function () {
+			if (playmusic) {
+				playmusic = false;
+				music.pause();
+			} else {
+				playmusic = true;
+				music.resume();
 			}
+
+		});
+		musicbutton.anchor.x = 1;
+		musicbutton.anchor.y = 1;
+		musicbutton.fixedToCamera = true;
+
+		soundbutton = this.game.add.button(800 - 16, 600, 'soundbutton', function () {
+			if (playsound) {
+				playsound = false;
+			} else {
+				playsound = true;
+			}
+
 		});
 		soundbutton.anchor.x = 1;
+		soundbutton.anchor.y = 1;
 		soundbutton.fixedToCamera = true;
 
 
@@ -405,6 +419,10 @@ ZombieGame.Game.prototype = {
 				bullet.body.setSize(7, 7, 0, 0);
 
 				bulletsremaining[selectedweapon]--;
+				if (playsound) {
+					gunshot.play();
+
+				}
 			}
 		}
 
@@ -427,6 +445,10 @@ ZombieGame.Game.prototype = {
 		gunhud2.frame = ignacio;
 		gunhud2.alpha = 1;
 		guntween.start();
+		if (playsound) {
+			pickbullets.play();
+
+		}
 
 	},
 	zombieupdate: function (singleEnemy) {
@@ -464,6 +486,10 @@ ZombieGame.Game.prototype = {
 				}
 
 				fuckyou++;
+
+				if (playsound) {
+					zombiedead.play();
+				}
 
 			}, this);
 		}

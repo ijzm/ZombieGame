@@ -1,3 +1,7 @@
+var music;
+var gunshot;
+var pickbullets;
+var zombiedead;
 ZombieGame.Preloader = function (game) { //declare the Preloader function
 
 	this.background = null;
@@ -16,6 +20,7 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('menubutton', './assets/menubutton.png');
 		this.load.image('retrybutton', './assets/retrybutton.png');
 		this.load.image('soundbutton', './assets/soundbutton.png');
+		this.load.image('musicbutton', './assets/musicbutton.png');
 		this.load.image('logo', './assets/logo.png');
 
 		this.load.spritesheet('char', './assets/player.png', 56, 43);
@@ -42,6 +47,10 @@ ZombieGame.Preloader.prototype = {
 		this.load.image('black', './assets/black.png');
 
 		this.load.audio('menumusic', './assets/menumusic.ogg');
+		this.load.audio('gunshot', './assets/gunshot.ogg');
+		this.load.audio('pickbullets', './assets/pickbullets.ogg');
+		this.load.audio('zombiedead', './assets/zombiedead.ogg');
+
 
 
 
@@ -63,7 +72,13 @@ ZombieGame.Preloader.prototype = {
 		//checking whether the music is ready to be played before proceeding to the Main Menu.
 		if (this.cache.isSoundDecoded('menumusic') && this.ready === false) {
 			this.ready = true;
+			music = this.add.audio('menumusic');
+			music.loopFull();
 			this.state.start('MainMenu');
+
+			gunshot = this.add.audio('gunshot');
+			pickbullets = this.add.audio('pickbullets');
+			zombiedead = this.add.audio('zombiedead');
 		}
 
 	}
