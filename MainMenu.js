@@ -80,10 +80,6 @@ ZombieGame.MainMenu.prototype = {
 		menubutton.alpha = 0;
 
 
-		console.log(music.isPlaying)
-
-
-
 
 		var tween = this.game.add.tween(bg).to({
 			x: [-bg.width + 800, 0, -bg.width + 800, 0, 0],
