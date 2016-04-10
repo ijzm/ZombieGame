@@ -89,7 +89,6 @@ ZombieGame.GameOver.prototype = {
 	update: function () {},
 	playTheGame: function () {
 		this.state.start("Game");
-		music.stop();
 	},
 
 	mainmenu: function () {
