@@ -74,13 +74,13 @@ ZombieGame.GameOver.prototype = {
 			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
-			strokeThickness: 3,
+			strokeThickness: 4,
 		});
 		bestscoretext = this.add.text(20, 450, "HighScore:" + " " + bestscore, {
 			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
-			strokeThickness: 3,
+			strokeThickness: 4,
 		});
 
 

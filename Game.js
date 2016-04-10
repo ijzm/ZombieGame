@@ -156,7 +156,7 @@ ZombieGame.Game.prototype = {
 			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
-			strokeThickness: 3
+			strokeThickness: 4
 		});
 		bulletstext.anchor.x = 0;
 		bulletstext.anchor.y = 0;
@@ -166,7 +166,7 @@ ZombieGame.Game.prototype = {
 			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
-			strokeThickness: 3,
+			strokeThickness: 4,
 		});
 		scoretext.anchor.x = 1;
 		scoretext.anchor.y = 0;
@@ -183,7 +183,7 @@ ZombieGame.Game.prototype = {
 			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
-			strokeThickness: 3,
+			strokeThickness: 4,
 		});
 		timelefttext.anchor.x = 0.5;
 		timelefttext.fixedToCamera = true;
