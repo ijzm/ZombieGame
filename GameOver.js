@@ -71,13 +71,13 @@ ZombieGame.GameOver.prototype = {
 
 		this.add.sprite(10, 300, "black");
 		scoretext = this.add.text(20, 350, "Score:" + " " + score, {
-			font: "60px Arial",
+			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
 		});
 		bestscoretext = this.add.text(20, 450, "HighScore:" + " " + bestscore, {
-			font: "60px Arial",
+			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,

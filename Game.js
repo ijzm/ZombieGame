@@ -153,7 +153,7 @@ ZombieGame.Game.prototype = {
 
 		//texts
 		bulletstext = this.add.text(64, 0, bulletsremaining[selectedweapon], {
-			font: "60px Arial",
+			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3
@@ -163,7 +163,7 @@ ZombieGame.Game.prototype = {
 		bulletstext.fixedToCamera = true;
 
 		scoretext = this.add.text(700, 0, score, {
-			font: "60px Arial",
+			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
@@ -180,7 +180,7 @@ ZombieGame.Game.prototype = {
 
 
 		timelefttext = this.add.text(400, 0, timeleft + "/" + maxtimeleft, {
-			font: "60px Arial",
+			font: "64px bebas_neueregular",
 			fill: "#FFFFFF",
 			stroke: '#000000',
 			strokeThickness: 3,
