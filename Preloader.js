@@ -4,7 +4,6 @@ var pickbullets;
 var zombiedead;
 ZombieGame.Preloader = function (game) { //declare the Preloader function
 
-	this.background = null;
 
 	this.ready = false;
 };
@@ -65,7 +64,9 @@ ZombieGame.Preloader.prototype = {
 
 	},
 
-	create: function () {},
+	create: function () {
+
+	},
 
 	update: function () {
 
@@ -73,15 +74,17 @@ ZombieGame.Preloader.prototype = {
 		if (this.cache.isSoundDecoded('menumusic') && this.ready === false) {
 			this.ready = true;
 			music = this.add.audio('menumusic');
-			music.loopFull();
 			this.state.start('MainMenu');
+			music.loopFull();
+
 
 			gunshot = this.add.audio('gunshot');
 			pickbullets = this.add.audio('pickbullets');
 			zombiedead = this.add.audio('zombiedead');
 		}
 
-	}
+	},
+
 
 
 
