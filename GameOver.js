@@ -40,12 +40,34 @@ ZombieGame.GameOver.prototype = {
 		playbutton.anchor.x = 1;
 		playbutton.anchor.y = 1;
 
-		playbutton = this.add.button(780, 475, "menubutton", this.mainmenu, this);
+		playbutton = this.add.button(780, 465, "menubutton", this.mainmenu, this);
 		playbutton.anchor.x = 1;
 		playbutton.anchor.y = 1;
 
-		music = this.add.audio('menumusic');
-		//music.loopFull();
+		musicbutton = this.game.add.button(800, 600, 'musicbutton', function () {
+			if (playmusic) {
+				playmusic = false;
+				music.pause();
+			} else {
+				playmusic = true;
+				music.resume();
+			}
+		});
+		musicbutton.anchor.x = 1;
+		musicbutton.anchor.y = 1;
+		musicbutton.fixedToCamera = true;
+
+		soundbutton = this.game.add.button(800 - 32, 600, 'soundbutton', function () {
+			if (playsound) {
+				playsound = false;
+			} else {
+				playsound = true;
+			}
+
+		});
+		soundbutton.anchor.x = 1;
+		soundbutton.anchor.y = 1;
+		soundbutton.fixedToCamera = true;
 
 		this.add.sprite(10, 300, "black");
 		scoretext = this.add.text(20, 350, "Score:" + " " + score, {

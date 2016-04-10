@@ -270,7 +270,7 @@ ZombieGame.Game.prototype = {
 		musicbutton.anchor.y = 1;
 		musicbutton.fixedToCamera = true;
 
-		soundbutton = this.game.add.button(800 - 16, 600, 'soundbutton', function () {
+		soundbutton = this.game.add.button(800 - 32, 600, 'soundbutton', function () {
 			if (playsound) {
 				playsound = false;
 			} else {
@@ -350,7 +350,12 @@ ZombieGame.Game.prototype = {
 		player.rotation = this.physics.arcade.angleToPointer(player)
 
 		if (this.input.activePointer.isDown) {
-			this.fire();
+			if (this.input.activePointer.x > 736 && this.input.activePointer.y > 568) {
+
+			} else {
+				this.fire();
+			}
+
 		}
 
 		zombies.forEachAlive(this.zombieupdate, this.game.physics.arcade)
